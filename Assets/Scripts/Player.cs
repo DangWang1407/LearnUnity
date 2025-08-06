@@ -9,7 +9,10 @@ public class Player : MonoBehaviour
     private float moveForce = 10f;
 
     [SerializeField]
-    private float jumpForce = 8f;
+    private float jumpForce = 80f;
+
+    [SerializeField]
+    private ForceMode2D jumpForceMode = ForceMode2D.Impulse;
 
     private float movementX;
 
@@ -26,6 +29,13 @@ public class Player : MonoBehaviour
     private bool jumpRequested = false;
 
     private string GROUND_TAG = "Ground";
+
+    private float jumpStartY;
+    private float maxJumpHeight;
+    private bool isJumping;
+
+    private float jumpStartTime;
+    private float jumpDuration;
 
     private void Awake()
     {
@@ -66,6 +76,22 @@ public class Player : MonoBehaviour
         }
         //Debug.Log("FixedUpdate called");
 
+        if (isJumping)
+        {
+            if (transform.position.y > maxJumpHeight)
+                maxJumpHeight = transform.position.y;
+
+            if (myBody.velocity.y < 0 && isGrounded)
+            {
+                isJumping = false;
+                float jumpHeight = maxJumpHeight - jumpStartY;
+
+                jumpDuration = Time.time - jumpStartTime; 
+
+                Debug.Log($"Mode: {jumpForceMode}, Jump Height: {jumpHeight:F2}, Duration: {jumpDuration:F2} sec");
+            }
+        }
+
     }
 
     void PlayerMoveKeyboard()
@@ -99,11 +125,21 @@ public class Player : MonoBehaviour
 
     void PlayerJump()
     {
-        jumpRequested = false;
         isGrounded = false;
-        myBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-        Debug.Log("Jumped");
-        
+        jumpRequested = false;
+        isJumping = true;
+
+        jumpStartY = transform.position.y;
+        maxJumpHeight = transform.position.y;
+
+        jumpStartTime = Time.time; 
+
+        myBody.velocity = new Vector2(myBody.velocity.x, 0f); 
+
+        myBody.AddForce(new Vector2(0f, jumpForce), jumpForceMode);
+
+        Debug.Log($"Jump mode: {jumpForceMode}, force: {jumpForce}");
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -116,7 +152,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(GROUND_TAG))
             isGrounded = true;
-        Debug.Log(collision.gameObject.name + " isGrounded: " + isGrounded);
+        //Debug.Log(collision.gameObject.name + " isGrounded: " + isGrounded);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
