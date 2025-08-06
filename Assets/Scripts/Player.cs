@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private static Player instance;
 
     [SerializeField]
     private float moveForce = 10f;
@@ -45,13 +46,27 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
 
         sr = GetComponent<SpriteRenderer>();
-
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         Debug.Log(myBody.bodyType);
+
+        GameObject spawnPoint = GameObject.Find("SpawnPoint");
+        if (spawnPoint != null)
+        {
+            transform.position = spawnPoint.transform.position;
+        }
     }
 
     // Update is called once per frame

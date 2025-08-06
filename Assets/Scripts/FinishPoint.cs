@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class FinishPoint : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -21,7 +21,8 @@ public class NewBehaviourScript : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Debug.Log("Player has reached the finish point!");
-            SceneController.instance.LoadScene("Scene2");
+
+            SceneLoader.Instance.LoadScene("Scene2");
         }
     }
 }
