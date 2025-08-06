@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
 
                 jumpDuration = Time.time - jumpStartTime; 
 
-                Debug.Log($"Mode: {jumpForceMode}, Jump Height: {jumpHeight:F2}, Duration: {jumpDuration:F2} sec");
+                //Debug.Log($"Mode: {jumpForceMode}, Jump Height: {jumpHeight:F2}, Duration: {jumpDuration:F2} sec");
             }
         }
 
@@ -139,7 +139,7 @@ public class Player : MonoBehaviour
 
         myBody.AddForce(new Vector2(0f, jumpForce), jumpForceMode);
 
-        Debug.Log($"Jump mode: {jumpForceMode}, force: {jumpForce}");
+        //Debug.Log($"Jump mode: {jumpForceMode}, force: {jumpForce}");
 
     }
 
