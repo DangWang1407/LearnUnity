@@ -9,7 +9,8 @@ public class Player : MonoBehaviour
     private float moveForce = 10f;
 
     [SerializeField]
-    private float jumpForce = 200f;
+    private float jumpForce = 80f;
+
 
     [SerializeField]
     private ForceMode2D jumpForceMode = ForceMode2D.Impulse;
